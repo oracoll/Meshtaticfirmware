@@ -51,10 +51,12 @@ template <typename T> bool SX126xInterface<T>::init()
     pinMode(SX126X_ANT_SW, OUTPUT);
 #endif
 
-#ifdef SX126X_POWER_EN // Perhaps add RADIOLIB_NC check, and beforehand define as such if it is undefined, but it is not commonly
-                       // used and not part of the 'default' set of pin definitions.
+#if defined(SX126X_POWER_EN) && (SX126X_POWER_EN != RADIOLIB_NC)
     pinMode(SX126X_POWER_EN, OUTPUT);
     digitalWrite(SX126X_POWER_EN, HIGH);
+#elif defined(LORA_EN) && (LORA_EN != RADIOLIB_NC)
+    pinMode(LORA_EN, OUTPUT);
+    digitalWrite(LORA_EN, HIGH);
 #endif
 
 #if HAS_LORA_FEM
@@ -1004,8 +1006,10 @@ template <typename T> bool SX126xInterface<T>::sleep()
     bool keepConfig = true;
     lora.sleep(keepConfig); // Note: we do not keep the config, full reinit will be needed
 
-#ifdef SX126X_POWER_EN
+#if defined(SX126X_POWER_EN) && (SX126X_POWER_EN != RADIOLIB_NC)
     digitalWrite(SX126X_POWER_EN, LOW);
+#elif defined(LORA_EN) && (LORA_EN != RADIOLIB_NC)
+    digitalWrite(LORA_EN, LOW);
 #endif
 
 #if HAS_LORA_FEM
@@ -1099,6 +1103,9 @@ template <typename T> void SX126xInterface<T>::setTransmitEnable(bool txon)
     } else {
         loraFEMInterface.setRxModeEnable();
     }
+#endif
+#if defined(LORA_EN_TX_ONLY) && defined(LORA_EN) && (LORA_EN != RADIOLIB_NC)
+    digitalWrite(LORA_EN, txon ? HIGH : LOW);
 #endif
 }
 
