@@ -21,8 +21,7 @@
 #define PIN_I2C_SDA 21
 #define PIN_I2C_SCL 22
 
-// GPS Module Serial Pins (ESP32 RX2 connected to GPS TX, TX2 connected to GPS
-// RX)
+// GPS Module Serial Pins (ESP32 RX2 connected to GPS TX, TX2 connected to GPS RX)
 #define PIN_GPS_RX 16
 #define PIN_GPS_TX 17
 
@@ -58,7 +57,7 @@
 #define LORA_RESET PIN_LORA_RESET
 #define LORA_DIO1 PIN_LORA_DIO1
 #define LORA_BUSY PIN_LORA_BUSY
-#define LORA_DIO2 PIN_LORA_BUSY
+#define LORA_DIO2 RADIOLIB_NC
 
 // SX126x driver mappings
 #define SX126X_CS LORA_CS
